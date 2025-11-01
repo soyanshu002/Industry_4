@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industry 4.0 in Welding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.29.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F4F8;
+            color: #1E293B;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .chart-container {
+            position: relative;
+        }
+        .flow-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3B82F6;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 0.5rem;
+        }
+        .flow-arrow-vertical {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3B82F6;
+            font-size: 2rem;
+            font-weight: bold;
+            height: 50px;
+        }
+        .flow-box {
+            border: 2px solid #93C5FD;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+            background-color: #EFF6FF;
+            flex-grow: 1;
+            flex-shrink: 0;
+            min-width: 120px;
+        }
+        .decision-box {
+            border: 2px solid #3B82F6;
+            background-color: #EFF6FF;
+            transform: rotate(45deg);
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem auto;
+        }
+        .decision-box-text {
+            transform: rotate(-45deg);
+            text-align: center;
+            font-weight: 600;
+        }
+        .timeline-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem 0;
+        }
+        .timeline-content {
+            border: 2px solid #93C5FD;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            background-color: #EFF6FF;
+        }
+        .timeline-dot {
+            position: absolute;
+            background-color: #2563EB;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            border: 4px solid #F0F4F8;
+        }
+        @media (min-width: 768px) {
+            .timeline-container {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                position: relative;
+            }
+            .timeline-container:before {
+                content: '';
+                position: absolute;
+                top: 9px;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background-color: #93C5FD;
+                width: 100%;
+            }
+            .timeline-item {
+                flex-basis: 0;
+                flex-grow: 1;
+                padding: 1rem;
+                align-items: center;
+            }
+            .timeline-dot {
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .timeline-content {
+                margin-top: 30px;
+                width: 100%;
+                height: 100%;
+            }
+        }
+        @media (max-width: 767px) {
+            .timeline-container {
+                display: flex;
+                flex-direction: column;
+                position: relative;
+            }
+            .timeline-container:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 9px;
+                width: 4px;
+                background-color: #93C5FD;
+            }
+            .timeline-item {
+                padding-left: 40px;
+                padding-bottom: 1rem;
+            }
+            .timeline-dot {
+                top: 1.25rem;
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#F0F4F8]">
+
+    <header class="bg-[#1E293B] text-white p-6 shadow-lg">
+        <div class="container mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold text-center">The Digital Transformation of Welding</h1>
+            <p class="text-lg md:text-xl text-center text-[#93C5FD] mt-1">An Industry 4.0 Deep Dive</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section class="card">
+            <h2 class="text-2xl font-bold text-[#2563EB] mb-4">The Four Industrial Revolutions: A Timeline</h2>
+            <p class="text-lg mb-6">Welding technology has evolved in lock-step with each industrial revolution. What began as a manual craft has transformed into an intelligent, data-driven process.</p>
+            <div class="timeline-container">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-semibold text-[#1D4ED8]">Industry 1.0</h3>
+                        <p class="text-sm text-gray-600">Late 18th Century</p>
+                        <p class="mt-2">Mechanization & Steam Power</p>
+                        <hr class="my-2 border-t border-[#93C5FD]">
+                        <p class="font-semibold">Welding: Forge Welding</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-semibold text-[#1D4ED8]">Industry 2.0</h3>
+                        <p class="text-sm text-gray-600">Late 19th Century</p>
+                        <p class="mt-2">Electricity & Mass Production</p>
+                        <hr class="my-2 border-t border-[#93C5FD]">
+                        <p class="font-semibold">Welding: Electric Arc, SMAW</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-semibold text-[#1D4ED8]">Industry 3.0</h3>
+                        <p class="text-sm text-gray-600">Mid 20th Century</p>
+                        <p class="mt-2">Computers & Automation</p>
+                        <hr class="my-2 border-t border-[#93C5FD]">
+                        <p class="font-semibold">Welding: GMAW, Laser, FSW</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-semibold text-[#1D4ED8]">Industry 4.0</h3>
+                        <p class="text-sm text-gray-600">2014 Onwards</p>
+                        <p class="mt-2">IoT, CPS & Data Analysis</p>
+                        <hr class="my-2 border-t border-[#93C5FD]">
+                        <p class="font-semibold">Welding: Intelligent Robots, Cloud</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2 class="text-2xl font-bold text-[#2563EB] mb-4">Evolving Trends: Cost vs. Quality</h2>
+            <p class="text-lg mb-6">Over time, the focus of welding has shifted. Early methods prioritized deposition rate, but automation (Industry 3.0) brought precision. Now, Industry 4.0 introduces "Intelligent Welding," using data to ensure quality and reduce costs simultaneously.</p>
+            <div class="chart-container w-full max-w-4xl mx-auto h-96 md:h-[500px]">
+                <canvas id="trendsChart"></canvas>
+            </div>
+        </section>
+        
+        <section class="card">
+            <h2 class="text-2xl font-bold text-[#2563EB] mb-4">The Four Pillars of Industry 4.0</h2>
+            <p class="text-lg mb-6">Industry 4.0 is not a single technology but a set of guiding principles for creating a smart, connected, and autonomous factory environment.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-[#EFF6FF] p-4 rounded-lg border-l-4 border-[#1D4ED8]">
+                    <h3 class="text-xl font-semibold text-[#1D4ED8]">Interoperability</h3>
+                    <p class="mt-2">Interconnection of machines, sensors, and people to communicate and share data over a network (e.g., tele-monitoring).</p>
+                </div>
+                <div class="bg-[#EFF6FF] p-4 rounded-lg border-l-4 border-[#1D4ED8]">
+                    <h3 class="text-xl font-semibold text-[#1D4ED8]">Real-Time Capability</h3>
+                    <p class="mt-2">The system's ability to collect and analyze data instantly, allowing for immediate feedback and control.</p>
+                </div>
+                <div class="bg-[#EFF6FF] p-4 rounded-lg border-l-4 border-[#1D4ED8]">
+                    <h3 class="text-xl font-semibold text-[#1D4ED8]">Decentralization</h3>
+                    <p class="mt-2">Allowing machines and systems (using ML/AI) to make local, autonomous decisions without direct human intervention.</p>
+                </div>
+                <div class="bg-[#EFF6FF] p-4 rounded-lg border-l-4 border-[#1D4ED8]">
+                    <h3 class="text-xl font-semibold text-[#1D4ED8]">Virtualization</h3>
+                    <p class="mt-2">Creating a "Digital Twin" or virtual model of a physical process to run simulations, test parameters, and predict outcomes.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="card">
+            <h2 class="text-2xl font-bold text-[#2563EB] mb-4">Monitoring: The Key to Weld Quality</h2>
+            <p class="text-lg mb-6">To achieve I4.0 control, we must monitor the welding process. There are two main approaches, each with its own trade-offs.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg border-2 border-dashed border-gray-300">
+                    <h3 class="text-xl font-bold text-gray-700 mb-3">Direct Monitoring (Offline)</h3>
+                    <p class="mb-4">Measures the actual quality variables. It is highly accurate but slow and often destructive, making it unsuitable for real-time control.</p>
+                    <ul class="list-disc list-outside pl-5 space-y-1">
+                        <li>Tensile Strength Testing</li>
+                        <li>Hardness Tests</li>
+                        <li>Non-Destructive Testing (NDT)</li>
+                        <li>Vision-Based Systems</li>
+                    </ul>
+                </div>
+                <div class="bg-[#EFF6FF] p-6 rounded-lg border-2 border-solid border-[#3B82F6]">
+                    <h3 class="text-xl font-bold text-[#1D4ED8] mb-3">Indirect Monitoring (Online)</h3>
+                    <p class="mb-4">Measures a related physical quantity (a state variable) to *infer* the weld quality. This is fast, practical, and the key to real-time control.</p>
+                    <ul class="list-disc list-outside pl-5 space-y-1">
+                        <li>Current / Voltage / Power Signals</li>
+                        <li>Arc Sound & Acoustic Emission (AE)</li>
+                        <li>Temperature (Infrared)</li>
+                        <li>Force & Torque Signals</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2 class="text-3xl font-bold text-[#2563EB] mb-6 text-center">Case Study: Intelligent Friction Stir Welding (FSW)</h2>
+            <p class="text-lg mb-8 text-center max-w-3xl mx-auto">This case study demonstrates how Industry 4.0 principles can be applied to a real-world manufacturing process (FSW) to monitor and control weld quality in real time.</p>
+
+            <h3 class="text-2xl font-semibold text-[#1D4ED8] mb-4">1. The Cyber-Physical System (CPS) Setup</h3>
+            <p class="text-lg mb-6">The first step is to connect the physical machine to the digital world. A force sensor on the FSW machine (the "Physical" part) transmits data in real time to a cloud server (the "Cyber" part) for analysis. This enables "Tele-Welding."</p>
+            <div class="flex flex-col md:flex-row items-center justify-center p-4">
+                <div class="flow-box">
+                    <span class="text-4xl">🏭</span>
+                    <h4 class="font-semibold">Physical Part</h4>
+                    <p>FSW Machine + Force Sensor</p>
+                </div>
+                <div class="flow-arrow-vertical md:flow-arrow">
+                    <span>&darr;</span>
+                    <span class="md:hidden">&darr;</span>
+                    <span class="hidden md:inline">&rarr;</span>
+                </div>
+                <div class="flow-box bg-[#1E293B] text-white border-[#1D4ED8]">
+                    <span class="text-4xl">☁️</span>
+                    <h4 class="font-semibold">Cyber Part</h4>
+                    <p>Cloud Server ("Meghamala")</p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-semibold text-[#1D4ED8] mt-10 mb-4">2. The Data: What the Sensor Sees</h3>
+            <p class="text-lg mb-6">The force sensor captures a detailed signature of the entire welding process, from the tool plunging into the material to its retraction. Any anomaly or defect in the weld will cause a change in this force signature.</p>
+            <div class="chart-container w-full max-w-4xl mx-auto h-96 md:h-[500px]">
+                <canvas id="forceChart"></canvas>
+            </div>
+
+            <h3 class="text-2xl font-semibold text-[#1D4ED8] mt-10 mb-4">3. Finding the "Sweet Spot": The Weld Quality Map</h3>
+            <p class="text-lg mb-6">Before controlling the process, we must understand it. By performing many test welds, a "Process Map" is created (Fig 8.14). This map shows the resulting Ultimate Tensile Strength (UTS) for every combination of rotational speed and welding speed. The goal of the AI is to navigate this map in real time to always stay in the high-strength (green/yellow) regions.</p>
+            <div id="plotlyHeatmap" class="chart-container w-full max-w-4xl mx-auto h-96 md:h-[500px]"></div>
+
+            <h3 class="text-2xl font-semibold text-[#1D4ED8] mt-10 mb-4">4. The "Fix-It" Loop: Real-Time Control</h3>
+            <p class="text-lg mb-6">This is the core of the I4.0 system (Fig 8.16). It's a closed-loop system that continuously predicts and corrects weld quality.</p>
+            <div class="w-full overflow-x-auto p-4">
+                <div class="flex flex-col items-center">
+                    <div class="flow-box w-64">
+                        <span class="text-4xl">🏭</span>
+                        <h4 class="font-semibold">FSW Machine</h4>
+                        <p>Welding is active</p>
+                    </div>
+                    <div class="flow-arrow-vertical"><span>&darr;</span></div>
+                    <div class="flow-box w-64 bg-[#1E293B] text-white border-[#1D4ED8]">
+                        <span class="text-4xl">☁️</span>
+                        <h4 class="font-semibold">Cloud Server</h4>
+                        <p>Receives Force Data</p>
+                    </div>
+                    <div class="flow-arrow-vertical"><span>&darr;</span></div>
+                    <div class="flow-box w-64">
+                        <h4 class="font-semibold">ML Model 1</h4>
+                        <p>Predicts Tensile Strength (UTS) in real time</p>
+                    </div>
+                    <div class="flow-arrow-vertical"><span>&darr;</span></div>
+                    <div class="decision-box">
+                        <div class="decision-box-text">Decision:<br>UTS < Reference?</div>
+                    </div>
+                    <div class="relative w-full max-w-lg flex justify-center">
+                        <div class="absolute left-0 top-0 text-center">
+                            <span class="font-semibold text-green-600">No Deviation</span>
+                            <div class="flow-arrow-vertical h-20 text-green-600 transform rotate-90" style="margin-top: -30px;"><span>&larr;</span></div>
+                            <p class="text-sm w-40">No change in parameters</p>
+                        </div>
+                        <div class="absolute right-0 top-0 text-center">
+                            <span class="font-semibold text-red-600">Yes, Deviation!</span>
+                            <div class="flow-arrow-vertical text-red-600"><span>&darr;</span></div>
+                            <div class="flow-box w-40 bg-red-100 border-red-400">
+                                <h4 class="font-semibold">ML Model 2</h4>
+                                <p>Predicts NEW optimal parameters</p>
+                            </div>
+                            <div class="flow-arrow-vertical text-red-600 h-20 transform -rotate-90" style="margin-top: 10px;"><span>&larr;</span></div>
+                            <p class="text-sm w-40">Send feedback to FSW Machine</p>
+                        </div>
+                    </div>
+                    <div style="height: 180px;"></div>
+                </div>
+            </div>
+            <p class="text-lg mt-10 text-center font-semibold bg-green-100 text-green-800 border border-green-300 p-4 rounded-lg">
+                <span class="text-2xl block mb-2">Result: Defect Elimination</span>
+                The system successfully detects when the weld is becoming defective (due to sub-optimal parameters) and automatically corrects the rotational and welding speed, creating a defect-free region on the fly.
+            </p>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#1E293B] text-white p-6 mt-8">
+        <div class="container mx-auto text-center">
+            <p class="text-sm text-gray-400">Infographic synthesized from "Chapter 8: Industry 4.0 in Welding" by D. Mishra, S. K. Pal, and D. Chakravarty.</p>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const wrapLabel = (label, maxWidth) => {
+                if (typeof label !== 'string' || label.length <= maxWidth) {
+                    return label;
+                }
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + word).length > maxWidth) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            };
+            
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            };
+            
+            const commonChartOptions = (title) => ({
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    },
+                    legend: {
+                        labels: {
+                            color: '#1E293B'
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: title,
+                        color: '#1E293B',
+                        font: {
+                            size: 18,
+                            weight: '600'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#1E293B',
+                            maxRotation: 45,
+                            minRotation: 0
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#1E293B'
+                        },
+                        grid: {
+                            color: '#D1D5DB'
+                        }
+                    }
+                }
+            });
+
+            const initTrendsChart = () => {
+                const ctx = document.getElementById('trendsChart').getContext('2d');
+                const labels = [
+                    'Industry 1.0', 
+                    'Industry 2.0', 
+                    'Industry 3.0', 
+                    'Industry 4.0'
+                ];
+                const chartData = {
+                    labels: labels.map(l => wrapLabel(l, 16)),
+                    datasets: [
+                        {
+                            label: 'Quality & Precision',
+                            data: [10, 30, 70, 95],
+                            borderColor: '#2563EB',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Cost',
+                            data: [90, 80, 50, 30],
+                            borderColor: '#DC2626',
+                            backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        }
+                    ]
+                };
+                new Chart(ctx, {
+                    type: 'line',
+                    data: chartData,
+                    options: commonChartOptions('Evolution of Welding: Cost vs. Quality')
+                });
+            };
+
+            const initForceChart = () => {
+                const ctx = document.getElementById('forceChart').getContext('2d');
+                const labels = Array.from({length: 150}, (_, i) => i);
+                const data = [
+                    500, 800, 1500, 1900, 1100, 1000, 1200, 1400, 1100, 900, 1000, 1100, 1300, 1500, 1200, 1000, 1300, 2500, 2800, 2700,
+                    2400, 2000, 3800, 4000, 3900, 3700, 3500, 3400, 3300, 3200, 3250, 3300, 3350, 3400, 3450, 3500, 3550, 3600, 3650, 3700,
+                    3750, 3800, 3850, 3900, 3950, 4000, 4050, 4100, 4050, 4000, 3950, 3900, 3850, 3800, 3750, 3700, 3650, 3600, 3550, 3500,
+                    3450, 3400, 3350, 3300, 3250, 3200, 3150, 3100, 3050, 3000, 2950, 2900, 2850, 2800, 2750, 2700, 2650, 2600, 2550, 2500,
+                    2450, 2400, 2350, 2300, 2250, 2200, 2150, 2100, 2050, 2000, 1950, 1900, 1850, 1800, 1750, 1700, 1650, 1600, 1550, 1500,
+                    1450, 1400, 1350, 1300, 1250, 1200, 1150, 1100, 1050, 1000, 950, 900, 850, 800, 750, 700, 650, 600, 550, 500,
+                    450, 400, 350, 300, 250, 200, 150, 100, 50, 0
+                ];
+                
+                const chartData = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Force (N)',
+                            data: data,
+                            borderColor: '#1D4ED8',
+                            backgroundColor: 'rgba(29, 78, 216, 0.1)',
+                            fill: true,
+                            tension: 0.1,
+                            pointRadius: 0
+                        }
+                    ]
+                };
+                
+                const options = commonChartOptions('FSW Process Signature: Force vs. Time (Approx.)');
+                options.scales.x.title = { display: true, text: 'Time (s)', color: '#1E293B' };
+                options.scales.y.title = { display: true, text: 'Force (N)', color: '#1E293B' };
+                options.scales.x.ticks.callback = function(value, index, values) {
+                    return index % 20 === 0 ? value : '';
+                };
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: chartData,
+                    options: options
+                });
+            };
+
+            const initPlotlyHeatmap = () => {
+                const xData = [600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600];
+                const yData = [40, 60, 80, 100, 120, 140, 160, 180, 200];
+                
+                const zData = [
+                    [158.9, 171.9, 210.7, 184.8, 197.8, 197.8, 210.7, 210.7, 197.8, 184.8, 171.9],
+                    [171.9, 184.8, 223.6, 197.8, 210.7, 210.7, 223.6, 223.6, 210.7, 197.8, 184.8],
+                    [184.8, 197.8, 236.6, 210.7, 223.6, 223.6, 236.6, 236.6, 223.6, 210.7, 197.8],
+                    [171.9, 197.8, 249.5, 223.6, 236.6, 236.6, 236.6, 236.6, 236.6, 223.6, 210.7],
+                    [158.9, 184.8, 236.6, 210.7, 223.6, 223.6, 236.6, 236.6, 223.6, 210.7, 197.8],
+                    [146.0, 171.9, 223.6, 197.8, 210.7, 210.7, 223.6, 223.6, 210.7, 197.8, 184.8],
+                    [158.9, 184.8, 236.6, 210.7, 223.6, 223.6, 236.6, 236.6, 223.6, 210.7, 197.8],
+                    [171.9, 197.8, 249.5, 223.6, 236.6, 236.6, 236.6, 236.6, 236.6, 223.6, 210.7],
+                    [184.8, 210.7, 236.6, 210.7, 223.6, 223.6, 236.6, 236.6, 223.6, 210.7, 197.8]
+                ];
+                
+                const data = [{
+                    z: zData,
+                    x: xData,
+                    y: yData,
+                    type: 'heatmap',
+                    renderer: 'canvas',
+                    colorscale: [
+                        [0, '#DC2626'],
+                        [0.2, '#F87171'],
+                        [0.4, '#FCD34D'],
+                        [0.6, '#34D399'],
+                        [0.8, '#2563EB'],
+                        [1, '#1D4ED8']
+                    ],
+                    colorbar: {
+                        title: 'UTS (MPa)'
+                    }
+                }];
+                
+                const layout = {
+                    title: 'FSW Tensile Strength (UTS) vs. Process Parameters',
+                    xaxis: { title: 'Tool Rotational Speed (rpm)' },
+                    yaxis: { title: 'Welding Speed (mm/min)' },
+                    font: {
+                        family: 'Inter, sans-serif',
+                        color: '#1E293B'
+                    },
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    margin: { l: 80, r: 50, b: 60, t: 60, pad: 4 }
+                };
+                
+                Plotly.newPlot('plotlyHeatmap', data, layout, {
+                    displayModeBar: false, 
+                    responsive: true 
+                });
+            };
+
+            window.addEventListener('load', () => {
+                initTrendsChart();
+                initForceChart();
+                initPlotlyHeatmap();
+            });
+
+        })();
+    </script>
+</body>
+</html>
